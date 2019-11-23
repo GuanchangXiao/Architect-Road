@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "file",
+      "type": "com.daliy.foodie.api.upload.FileUpload",
+      "sourceType": "com.daliy.foodie.api.upload.FileUpload"
+    }
+  ],
+  "properties": [
+    {
+      "name": "file.image-server-url",
+      "type": "java.lang.String",
+      "sourceType": "com.daliy.foodie.api.upload.FileUpload"
+    },
+    {
+      "name": "file.image-user-face-location",
+      "type": "java.lang.String",
+      "sourceType": "com.daliy.foodie.api.upload.FileUpload"
+    }
+  ],
+  "hints": []
+}

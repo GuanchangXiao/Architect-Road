@@ -11,5 +11,13 @@
 
     <artifactId>daliy.foodie.mapper</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.architect.road</groupId>
+            <artifactId>daliy.foodie.pojo</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

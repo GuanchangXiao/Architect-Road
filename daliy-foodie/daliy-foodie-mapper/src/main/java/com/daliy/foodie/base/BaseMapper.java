@@ -1,3 +1,8 @@
+package com.daliy.foodie.base;
+
+import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.MySqlMapper;
+
 /*
  * The MIT License (MIT)
  *
@@ -21,14 +26,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package mybatis.generator.maaper;
-
-import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.common.MySqlMapper;
-
-/**
- * 继承自己的MyMapper
- */
-public interface MyMapper<T> extends Mapper<T>, MySqlMapper<T> {
+public interface BaseMapper<T> extends Mapper<T>, MySqlMapper<T> {
 }
