@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/daliy-foodie.iml" filepath="$PROJECT_DIR$/daliy-foodie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/daliy-foodie-api/daliy-foodie-api.iml" filepath="$PROJECT_DIR$/daliy-foodie-api/daliy-foodie-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/daliy-foodie-common/daliy-foodie-common.iml" filepath="$PROJECT_DIR$/daliy-foodie-common/daliy-foodie-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/daliy-foodie-mapper/daliy-foodie-mapper.iml" filepath="$PROJECT_DIR$/daliy-foodie-mapper/daliy-foodie-mapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/daliy-foodie-pojo/daliy-foodie-pojo.iml" filepath="$PROJECT_DIR$/daliy-foodie-pojo/daliy-foodie-pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/daliy-foodie-service/daliy-foodie-service.iml" filepath="$PROJECT_DIR$/daliy-foodie-service/daliy-foodie-service.iml" />
+    </modules>
+  </component>
+</project>
