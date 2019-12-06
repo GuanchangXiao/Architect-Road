@@ -1,6 +1,6 @@
 package com.daliy.foodie.common.utils;
 
-import com.daliy.foodie.common.enums.StatusCode;
+import com.daliy.foodie.common.enums.HttpResponseStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
@@ -49,8 +49,8 @@ public class JSONResult {
     }
 
     public JSONResult(Object data) {
-        this.status = StatusCode.SUCCESS.getCode();
-        this.msg = StatusCode.SUCCESS.getMessage();
+        this.status = HttpResponseStatus.SUCCESS.code;
+        this.msg = HttpResponseStatus.SUCCESS.message;
         this.data = data;
     }
 
@@ -63,27 +63,27 @@ public class JSONResult {
     }
 
     public static JSONResult errorMsg(String msg) {
-        return new JSONResult(StatusCode.MSG_ERROR.getCode(), msg, null);
+        return new JSONResult(HttpResponseStatus.MSG_ERROR.code, msg, null);
     }
 
     public static JSONResult errorMap(Object data) {
-        return new JSONResult(StatusCode.MAP_ERROR.getCode(), StatusCode.MAP_ERROR.getMessage(), data);
+        return new JSONResult(HttpResponseStatus.MAP_ERROR.code, HttpResponseStatus.MAP_ERROR.message, data);
     }
 
     public static JSONResult errorTokenMsg(String msg) {
-        return new JSONResult(StatusCode.TOKEN_ERROR.getCode(), msg, null);
+        return new JSONResult(HttpResponseStatus.TOKEN_ERROR.code, msg, null);
     }
 
     public static JSONResult errorException(String msg) {
-        return new JSONResult(StatusCode.EXCEPTION_ERROR.getCode(), msg, null);
+        return new JSONResult(HttpResponseStatus.EXCEPTION_ERROR.code, msg, null);
     }
 
     public static JSONResult errorUserQQ(String msg) {
-        return new JSONResult(StatusCode.EXCEPTION_ERROR.getCode(), msg, null);
+        return new JSONResult(HttpResponseStatus.EXCEPTION_ERROR.code, msg, null);
     }
 
     public Boolean isOK() {
-        return this.status == StatusCode.SUCCESS.getCode();
+        return this.status == HttpResponseStatus.SUCCESS.code;
     }
 
 }
