@@ -1,4 +1,4 @@
-package com.daliy.foodie.base;
+package com.daliy.foodie.my;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
