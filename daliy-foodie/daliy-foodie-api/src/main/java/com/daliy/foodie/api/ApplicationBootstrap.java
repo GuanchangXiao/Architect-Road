@@ -11,8 +11,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @SpringBootApplication
 @MapperScan(basePackages = "com.daliy.foodie.mapper")
-@ComponentScan(basePackages = { "com.daliy.foodie"})
-//@ComponentScan(basePackages = { "com.daliy.foodie", "org.n3r.idworker"})
+@ComponentScan(basePackages = { "com.daliy.foodie", "org.n3r.idworker"})
 //@EnableScheduling
 public class ApplicationBootstrap {
 
