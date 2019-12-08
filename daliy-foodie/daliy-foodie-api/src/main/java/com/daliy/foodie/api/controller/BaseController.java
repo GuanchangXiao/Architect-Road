@@ -20,16 +20,19 @@ public class BaseController {
     public static final String FOODIE_SHOPCART = "shopcart";
 
     // 支付中心的调用地址
-    String PAYMENT_URL = "http://localhost:8088/foodie-payment/payment/createMerchantOrder";
+    String PAYMENT_URL = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
 
-    // 回调通知的url
-    String PAY_RETURN_URL = "http://localhost:8088/foodie-dev-api/orders/notifyMerchantOrderPaid";
+    // 微信支付成功 -> 支付中心 -> 天天吃货平台
+    //                       |-> 回调通知的url
+    String PAY_RETURN_URL = "http://api.z.mukewang.com/foodie-dev-api/orders/notifyMerchantOrderPaid";
 
     // 用户上传头像的位置
     public static final String IMAGE_USER_FACE_LOCATION = File.separator + "Users" +
             File.separator + "perl" +
             File.separator + "Documents" +
             File.separator + "faces";
+//    public static final String IMAGE_USER_FACE_LOCATION = "/workspaces/images/foodie/faces";
+
 
 //    @Autowired
 //    public MyOrdersService myOrdersService;
