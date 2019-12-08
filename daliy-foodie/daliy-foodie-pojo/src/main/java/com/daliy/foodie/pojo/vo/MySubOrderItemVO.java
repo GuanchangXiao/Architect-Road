@@ -12,6 +12,7 @@ public class MySubOrderItemVO {
     private String itemImg;
     private String itemName;
     private String itemSpecName;
+    private String itemSpecId;
     private Integer buyCounts;
     private Integer price;
 }

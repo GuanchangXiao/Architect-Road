@@ -1,6 +1,8 @@
 package com.daliy.foodie.api.controller;
 
 import com.daliy.foodie.common.utils.JSONResult;
+import com.daliy.foodie.pojo.Orders;
+import com.daliy.foodie.service.center.MyOrdersService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.spring.web.json.Json;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -18,6 +23,15 @@ import java.io.File;
 public class BaseController {
 
     public static final String FOODIE_SHOPCART = "shopcart";
+
+    public static final Set<String> FACE_FILE_SET = new HashSet() {
+        {
+            add("png");
+            add("jpg");
+            add("jpeg");
+
+        }
+    };
 
     // 支付中心的调用地址
     String PAYMENT_URL = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";		// produce
@@ -34,18 +48,18 @@ public class BaseController {
 //    public static final String IMAGE_USER_FACE_LOCATION = "/workspaces/images/foodie/faces";
 
 
-//    @Autowired
-//    public MyOrdersService myOrdersService;
+    @Autowired
+    public MyOrdersService myOrdersService;
 
-//    /**
-//     * 用于验证用户和订单是否有关联关系，避免非法用户调用
-//     * @return
-//     */
-//    public JSONResult checkUserOrder(String userId, String orderId) {
-//        Orders order = myOrdersService.queryMyOrder(userId, orderId);
-//        if (order == null) {
-//            return JSONResult.errorMsg("订单不存在！");
-//        }
-//        return JSONResult.ok(order);
-//    }
+    /**
+     * 用于验证用户和订单是否有关联关系，避免非法用户调用
+     * @return
+     */
+    public JSONResult checkUserOrder(String userId, String orderId) {
+        Orders order = myOrdersService.queryMyOrder(userId, orderId);
+        if (order == null) {
+            return JSONResult.errorMsg("订单不存在！");
+        }
+        return JSONResult.ok(order);
+    }
 }
