@@ -184,34 +184,29 @@ public class ItemServiceImpl implements ItemService {
     public String queryItemMainImgById(String itemId) {
         ItemsImg itemsImg = new ItemsImg();
         itemsImg.setItemId(itemId);
-        itemsImg.setIsMain(YesOrNo.YES.tpye);
+        itemsImg.setIsMain(YesOrNo.YES.type);
         ItemsImg result = itemsImgMapper.selectOne(itemsImg);
         return result != null ? result.getUrl() : "";
     }
 
+    /**
+     * 正常扣除库存流程
+     * -- 加锁
+     * -- 查询库存
+     * -- 判断库存，是否能够减少到0以下
+     * -- 提示用户库存不够
+     * -- 解锁
+     *
+     * 解决方案
+     * 1、synchronized 不推荐使用，集群下无用，性能低下 (只能单体环境下使用)
+     * 2、锁数据库: 不推荐，导致数据库性能低下
+     * 3、分布式锁(推荐，分布式环境下表现良好) zookeeper redis
+     * @param specId
+     * @param buyCounts
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void decreaseItemSpecStock(String specId, int buyCounts) {
-
-        /**
-         synchronized 不推荐使用，集群下无用，性能低下
-         锁数据库: 不推荐，导致数据库性能低下
-         分布式锁 zookeeper redis
-
-         lockUtil.getLock(); -- 加锁
-
-         1. 查询库存
-        int stock = 10;
-
-         2. 判断库存，是否能够减少到0以下
-        if (stock - buyCounts < 0) {
-         提示用户库存不够
-            10 - 3 -3 - 5 = -1
-        }
-
-         lockUtil.unLock(); -- 解锁
-         **/
-
 
         int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
         if (result != 1) {

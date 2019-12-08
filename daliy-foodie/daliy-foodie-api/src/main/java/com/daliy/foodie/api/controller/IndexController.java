@@ -31,7 +31,7 @@ public class IndexController {
     @ApiOperation(value = "获取首页轮播图列表", notes = "获取首页轮播图列表", httpMethod = "GET")
     @GetMapping("/carousel")
     public JSONResult carousel() {
-        return JSONResult.ok(carouselService.queryAll(YesOrNo.YES.tpye));
+        return JSONResult.ok(carouselService.queryAll(YesOrNo.YES.type));
     }
 
     /**

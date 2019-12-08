@@ -11,6 +11,6 @@ public enum YesOrNo {
     NO(0, "否"),
     YES(1, "是");
 
-    public final int tpye;
+    public final int type;
     public final String value;
 }

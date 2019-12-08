@@ -136,6 +136,7 @@
         where
             id = #{specId}
         and
+            -- 乐观锁 通过where条件
             stock >= #{pendingCounts}
 
     </update>
