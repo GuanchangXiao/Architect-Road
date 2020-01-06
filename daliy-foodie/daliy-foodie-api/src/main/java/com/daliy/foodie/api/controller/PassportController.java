@@ -1,9 +1,6 @@
 package com.daliy.foodie.api.controller;
 
-import com.daliy.foodie.common.utils.CookieUtils;
-import com.daliy.foodie.common.utils.JSONResult;
-import com.daliy.foodie.common.utils.JsonUtils;
-import com.daliy.foodie.common.utils.MD5Utils;
+import com.daliy.foodie.common.utils.*;
 import com.daliy.foodie.pojo.Users;
 import com.daliy.foodie.pojo.bo.UserBO;
 import com.daliy.foodie.service.UserService;
@@ -24,8 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("passport")
 public class PassportController extends BaseController {
 
+    private static final String SHOP_CART_KEY = "shopcarts";
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisOperator redisOperator;
 
     @ApiOperation(value = "用户名是否存在", notes = "用户名是否存在", httpMethod = "GET")
     @GetMapping("/usernameIsExist")
@@ -88,7 +90,8 @@ public class PassportController extends BaseController {
                 JsonUtils.objectToJson(userResult), true);
 
         // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据
+        // 同步购物车数据
+        syncShopCartData(request,response);
 
         return JSONResult.ok();
     }
@@ -123,7 +126,8 @@ public class PassportController extends BaseController {
 
 
         // TODO 生成用户token，存入redis会话
-        // TODO 同步购物车数据
+        // 同步购物车数据
+        syncShopCartData(request,response);
 
         return JSONResult.ok(userResult);
     }
@@ -147,10 +151,33 @@ public class PassportController extends BaseController {
 
         // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, "user");
+        // 用户退出登录，需要清空购物车
+        CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
 
-        // TODO 用户退出登录，需要清空购物车
         // TODO 分布式会话中需要清除用户数据
 
         return JSONResult.ok();
+    }
+
+    /**
+     * 同步cookie和redis购物车中的数据
+     * @param request
+     * @param response
+     */
+    private void syncShopCartData(HttpServletRequest request, HttpServletResponse response) {
+        String redisData = redisOperator.get(SHOP_CART_KEY);
+        String cookieData = CookieUtils.getCookieValue(request,FOODIE_SHOPCART,true);
+
+        if (StringUtils.isNotBlank(cookieData)) {
+            if (StringUtils.isBlank(redisData)) {
+                redisOperator.set(SHOP_CART_KEY,cookieData);
+            }else {
+                // redis和cookie都有数据，此时应该合并两边的数据
+            }
+        }else {
+            if (StringUtils.isNotBlank(redisData)) {
+                CookieUtils.setCookie(request,response,FOODIE_SHOPCART,redisData,true);
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +32,6 @@ import java.util.List;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
-
-    private static final String SHOP_CART_KEY = "shopcarts";
 
     @Autowired
     private OrdersMapper ordersMapper;
@@ -57,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public OrderVO createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVO createOrder(List<ShopcartBO> shopcartList, SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -92,10 +91,12 @@ public class OrderServiceImpl implements OrderService {
         String itemSpecIdArr[] = itemSpecIds.split(",");
         Integer totalAmount = 0;    // 商品原价累计
         Integer realPayAmount = 0;  // 优惠后的实际支付价格累计
+        List<ShopcartBO> waitClearShopCartItems = new ArrayList<>(); // 累计要删除的购物车商品
         for (String itemSpecId : itemSpecIdArr) {
             // 整合redis后，商品购买的数量重新从redis的购物车中获取
-            ShopcartBO shopcartBO = getItemBySpecIdFromRedis(itemSpecId);
+            ShopcartBO shopcartBO = getItemBySpecIdFromRedis(shopcartList,itemSpecId);
             int buyCounts = shopcartBO.getBuyCounts();
+            waitClearShopCartItems.add(shopcartBO);
             // 2.1 根据规格id，查询规格的具体信息，主要获取价格
             ItemsSpec itemSpec = itemService.queryItemSpecById(itemSpecId);
             totalAmount += itemSpec.getPriceNormal() * buyCounts;
@@ -139,6 +140,8 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderId(orderId);
         orderVO.setMerchantOrdersVO(merchantOrdersVO);
+        orderVO.setWaitDelShopCartItems(waitClearShopCartItems);
+
         return orderVO;
     }
 
@@ -188,23 +191,17 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 从redis中获取商品信息
+     *
+     * @param shopcartList 购物车中的商品列表
      * @param itemSpecId 商品规格id
      * @return
      */
-    private ShopcartBO getItemBySpecIdFromRedis(String itemSpecId) {
-        String shopCartStr = redisOperator.get(SHOP_CART_KEY);
-        ShopcartBO shopcartBO = null;
-        if (StringUtils.isNoneBlank(shopCartStr)) {
-            List<ShopcartBO> shopcartList = JsonUtils.jsonToList(shopCartStr,ShopcartBO.class);
-            for (ShopcartBO shopcart : shopcartList) {
-                if (shopcart.getSpecId().equals(itemSpecId)) {
-                    shopcartBO = shopcart;
-                    shopcartList.remove(shopcart);
-                    break;
-                }
+    private ShopcartBO getItemBySpecIdFromRedis(List<ShopcartBO> shopcartList, String itemSpecId) {
+        for (ShopcartBO shopcart : shopcartList) {
+            if (shopcart.getSpecId().equals(itemSpecId)) {
+                return shopcart;
             }
-            redisOperator.set(SHOP_CART_KEY,JsonUtils.objectToJson(shopcartList));
         }
-        return shopcartBO;
+        return null;
     }
 }
