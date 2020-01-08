@@ -25,7 +25,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         /* 允许跨域 */
-        config.addAllowedOrigin("http://localhost:8080");
+        config.addAllowedOrigin("*");
 //        config.addAllowedOrigin("http://shop.z.mukewang.com:8080");
 //        config.addAllowedOrigin("http://center.z.mukewang.com:8080");
 //        config.addAllowedOrigin("http://shop.z.mukewang.com");
