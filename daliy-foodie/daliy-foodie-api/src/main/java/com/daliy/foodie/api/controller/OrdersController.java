@@ -1,5 +1,6 @@
 package com.daliy.foodie.api.controller;
 
+import com.daliy.foodie.common.consts.RedisKeys;
 import com.daliy.foodie.common.enums.OrderStatusEnum;
 import com.daliy.foodie.common.enums.PayMethod;
 import com.daliy.foodie.common.utils.CookieUtils;
@@ -79,7 +80,7 @@ public class OrdersController extends BaseController{
         shopcartList.removeAll(orderVO.getWaitDelShopCartItems());
         String newShopCartItems = JsonUtils.objectToJson(shopcartList);
         redisOperator.set(SHOP_CART_KEY,newShopCartItems);
-        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, newShopCartItems, true);
+        CookieUtils.setCookie(request, response, RedisKeys.FOODIE_SHOPCART, newShopCartItems, true);
 
         // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
         MerchantOrdersVO merchantOrdersVO = orderVO.getMerchantOrdersVO();

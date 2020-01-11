@@ -1,5 +1,6 @@
 package com.daliy.foodie.api.controller;
 
+import com.daliy.foodie.common.consts.RedisKeys;
 import com.daliy.foodie.common.utils.CookieUtils;
 import com.daliy.foodie.common.utils.JSONResult;
 import com.daliy.foodie.common.utils.JsonUtils;
@@ -33,10 +34,6 @@ public class BaseController {
 
     @Autowired
     private RedisOperator redisOperator;
-
-    public static final String FOODIE_SHOPCART = "shopcart";
-    public static final String SHOP_CART_KEY = "shopcarts";
-    public static final String USER_TOKEN = "login_users";
 
     public static final Set<String> FACE_FILE_SET = new HashSet() {
         {
@@ -99,7 +96,7 @@ public class BaseController {
      */
     public void updateUserInfo(Users users, HttpServletRequest request, HttpServletResponse response) {
         UserVO userVO = bindUserVO(users);
-        redisOperator.set(USER_TOKEN + ":" + userVO.getId(),userVO.getUserUniqueToken());
+        redisOperator.set(RedisKeys.USER_TOKEN + ":" + userVO.getId(),userVO.getUserUniqueToken());
         CookieUtils.setCookie(request, response, "user",
                 JsonUtils.objectToJson(userVO), true);
     }

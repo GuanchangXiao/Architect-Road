@@ -1,5 +1,6 @@
 package com.daliy.foodie.api.controller;
 
+import com.daliy.foodie.common.consts.RedisKeys;
 import com.daliy.foodie.common.utils.*;
 import com.daliy.foodie.pojo.Users;
 import com.daliy.foodie.pojo.bo.UserBO;
@@ -129,10 +130,10 @@ public class PassportController extends BaseController {
         // 清除用户的相关信息的cookie
         CookieUtils.deleteCookie(request, response, "user");
         // 用户退出登录，需要清空购物车
-        CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
+        CookieUtils.deleteCookie(request, response, RedisKeys.FOODIE_SHOPCART);
 
         // 清除redis用户数据
-        redisOperator.del(USER_TOKEN + ":" + userId);
+        redisOperator.del(RedisKeys.USER_TOKEN + ":" + userId);
 
         return JSONResult.ok();
     }
@@ -143,18 +144,18 @@ public class PassportController extends BaseController {
      * @param response
      */
     private void syncShopCartData(HttpServletRequest request, HttpServletResponse response) {
-        String redisData = redisOperator.get(SHOP_CART_KEY);
-        String cookieData = CookieUtils.getCookieValue(request,FOODIE_SHOPCART,true);
+        String redisData = redisOperator.get(RedisKeys.SHOP_CART_KEY);
+        String cookieData = CookieUtils.getCookieValue(request,RedisKeys.FOODIE_SHOPCART,true);
 
         if (StringUtils.isNotBlank(cookieData)) {
             if (StringUtils.isBlank(redisData)) {
-                redisOperator.set(SHOP_CART_KEY,cookieData);
+                redisOperator.set(RedisKeys.SHOP_CART_KEY,cookieData);
             }else {
                 // redis和cookie都有数据，此时应该合并两边的数据
             }
         }else {
             if (StringUtils.isNotBlank(redisData)) {
-                CookieUtils.setCookie(request,response,FOODIE_SHOPCART,redisData,true);
+                CookieUtils.setCookie(request,response,RedisKeys.FOODIE_SHOPCART,redisData,true);
             }
         }
     }
