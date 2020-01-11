@@ -25,9 +25,6 @@ import java.util.UUID;
 @RequestMapping("passport")
 public class PassportController extends BaseController {
 
-    private static final String SHOP_CART_KEY = "shopcarts";
-    private static final String LOGIN_KEY =  "login_users";
-
     @Autowired
     private UserService userService;
 
@@ -88,7 +85,9 @@ public class PassportController extends BaseController {
 
         // 4. 实现注册
         Users userResult = userService.createUser(userBO);
-        updateUserInfoAndSyncShopCart(userResult,request,response);
+        updateUserInfo(userResult,request,response);
+        // 同步购物车数据
+        syncShopCartData(request,response);
         return JSONResult.ok();
     }
 
@@ -114,7 +113,10 @@ public class PassportController extends BaseController {
         if (userResult == null) {
             return JSONResult.errorMsg("用户名或密码不正确");
         }
-        updateUserInfoAndSyncShopCart(userResult,request,response);
+        // 更新用户信息
+        updateUserInfo(userResult,request,response);
+        // 同步购物车数据
+        syncShopCartData(request,response);
         return JSONResult.ok(userResult);
     }
 
@@ -130,7 +132,7 @@ public class PassportController extends BaseController {
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
 
         // 清除redis用户数据
-        redisOperator.del(LOGIN_KEY + ":" + userId);
+        redisOperator.del(USER_TOKEN + ":" + userId);
 
         return JSONResult.ok();
     }
@@ -155,35 +157,5 @@ public class PassportController extends BaseController {
                 CookieUtils.setCookie(request,response,FOODIE_SHOPCART,redisData,true);
             }
         }
-    }
-
-    /**
-     * 绑定UserVO数据
-     * @param userBO
-     * @return
-     */
-    private UserVO bindUserVO(Users userBO) {
-        String token = UUID.randomUUID().toString().trim();
-        UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(userBO,userVO);
-        userVO.setUserUniqueToken(token);
-
-        return userVO;
-    }
-
-    /**
-     * 更新用户在redis和cookie中的信息
-     * @param user
-     * @param request
-     * @param response
-     */
-    private void updateUserInfoAndSyncShopCart(Users user,HttpServletRequest request,HttpServletResponse response) {
-        UserVO userVO = bindUserVO(user);
-        redisOperator.set(LOGIN_KEY + ":" + userVO.getId(), userVO.getUserUniqueToken());
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userVO), true);
-
-        // 同步购物车数据
-        syncShopCartData(request,response);
     }
 }

@@ -2,10 +2,9 @@ package com.daliy.foodie.api.controller.center;
 
 import com.daliy.foodie.api.controller.BaseController;
 import com.daliy.foodie.api.upload.FileUpload;
-import com.daliy.foodie.common.utils.CookieUtils;
 import com.daliy.foodie.common.utils.DateUtil;
 import com.daliy.foodie.common.utils.JSONResult;
-import com.daliy.foodie.common.utils.JsonUtils;
+import com.daliy.foodie.common.utils.RedisOperator;
 import com.daliy.foodie.pojo.Users;
 import com.daliy.foodie.pojo.bo.CenterUserBO;
 import com.daliy.foodie.service.center.CenterUserService;
@@ -20,12 +19,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,10 @@ public class CenterUserController extends BaseController {
 
     @Autowired
     private CenterUserService centerUserService;
+
+    @Autowired
+    private RedisOperator redisOperator;
+
     @Autowired
     private FileUpload fileUpload;
 
@@ -112,12 +117,7 @@ public class CenterUserController extends BaseController {
 
         // 更新用户头像到数据库
         Users userResult = centerUserService.updateUserFace(userId, finalUserFaceUrl);
-
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
-
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+        updateUserInfo(userResult,request,response);
         return JSONResult.ok();
     }
 
@@ -138,30 +138,10 @@ public class CenterUserController extends BaseController {
         }
 
         Users userResult = centerUserService.updateUserInfo(userId, centerUserBO);
-
-        userResult = setNullProperty(userResult);
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
-
-        // TODO 后续要改，增加令牌token，会整合进redis，分布式会话
+        updateUserInfo(userResult,request,response);
 
         return JSONResult.ok();
 
-    }
-
-    /**
-     * 清空用户个人信息，保留id等数据
-     * @param userResult
-     * @return
-     */
-    private Users setNullProperty(Users userResult) {
-        userResult.setPassword(null);
-        userResult.setMobile(null);
-        userResult.setEmail(null);
-        userResult.setCreatedTime(null);
-        userResult.setUpdatedTime(null);
-        userResult.setBirthday(null);
-        return userResult;
     }
 
     /**
@@ -182,5 +162,4 @@ public class CenterUserController extends BaseController {
         }
         return map;
     }
-
 }
