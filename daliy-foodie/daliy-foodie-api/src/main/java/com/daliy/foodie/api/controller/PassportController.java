@@ -3,15 +3,19 @@ package com.daliy.foodie.api.controller;
 import com.daliy.foodie.common.utils.*;
 import com.daliy.foodie.pojo.Users;
 import com.daliy.foodie.pojo.bo.UserBO;
+import com.daliy.foodie.pojo.vo.UserVO;
 import com.daliy.foodie.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * Created by perl on 2019-12-07.
@@ -22,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PassportController extends BaseController {
 
     private static final String SHOP_CART_KEY = "shopcarts";
+    private static final String LOGIN_KEY =  "login_users";
 
     @Autowired
     private UserService userService;
@@ -83,16 +88,7 @@ public class PassportController extends BaseController {
 
         // 4. 实现注册
         Users userResult = userService.createUser(userBO);
-
-        userResult = setNullProperty(userResult);
-
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
-
-        // TODO 生成用户token，存入redis会话
-        // 同步购物车数据
-        syncShopCartData(request,response);
-
+        updateUserInfoAndSyncShopCart(userResult,request,response);
         return JSONResult.ok();
     }
 
@@ -118,30 +114,9 @@ public class PassportController extends BaseController {
         if (userResult == null) {
             return JSONResult.errorMsg("用户名或密码不正确");
         }
-
-        userResult = setNullProperty(userResult);
-
-        CookieUtils.setCookie(request, response, "user",
-                JsonUtils.objectToJson(userResult), true);
-
-
-        // TODO 生成用户token，存入redis会话
-        // 同步购物车数据
-        syncShopCartData(request,response);
-
+        updateUserInfoAndSyncShopCart(userResult,request,response);
         return JSONResult.ok(userResult);
     }
-
-    private Users setNullProperty(Users userResult) {
-        userResult.setPassword(null);
-        userResult.setMobile(null);
-        userResult.setEmail(null);
-        userResult.setCreatedTime(null);
-        userResult.setUpdatedTime(null);
-        userResult.setBirthday(null);
-        return userResult;
-    }
-
 
     @ApiOperation(value = "用户退出登录", notes = "用户退出登录", httpMethod = "POST")
     @PostMapping("/logout")
@@ -154,7 +129,8 @@ public class PassportController extends BaseController {
         // 用户退出登录，需要清空购物车
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
 
-        // TODO 分布式会话中需要清除用户数据
+        // 清除redis用户数据
+        redisOperator.del(LOGIN_KEY + ":" + userId);
 
         return JSONResult.ok();
     }
@@ -179,5 +155,35 @@ public class PassportController extends BaseController {
                 CookieUtils.setCookie(request,response,FOODIE_SHOPCART,redisData,true);
             }
         }
+    }
+
+    /**
+     * 绑定UserVO数据
+     * @param userBO
+     * @return
+     */
+    private UserVO bindUserVO(Users userBO) {
+        String token = UUID.randomUUID().toString().trim();
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userBO,userVO);
+        userVO.setUserUniqueToken(token);
+
+        return userVO;
+    }
+
+    /**
+     * 更新用户在redis和cookie中的信息
+     * @param user
+     * @param request
+     * @param response
+     */
+    private void updateUserInfoAndSyncShopCart(Users user,HttpServletRequest request,HttpServletResponse response) {
+        UserVO userVO = bindUserVO(user);
+        redisOperator.set(LOGIN_KEY + ":" + userVO.getId(), userVO.getUserUniqueToken());
+        CookieUtils.setCookie(request, response, "user",
+                JsonUtils.objectToJson(userVO), true);
+
+        // 同步购物车数据
+        syncShopCartData(request,response);
     }
 }
