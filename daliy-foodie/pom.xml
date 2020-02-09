@@ -7,14 +7,18 @@
     <groupId>com.architect.road</groupId>
     <artifactId>daliy.foodie</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
     <modules>
         <module>daliy-foodie-pojo</module>
         <module>daliy-foodie-service</module>
         <module>daliy-foodie-common</module>
         <module>daliy-foodie-mapper</module>
         <module>daliy-foodie-api</module>
+        <!--es search-->
+        <module>daliy-foodie-search</module>
+        <!--fast dfs-->
+        <module>daliy-foodie-dfs</module>
     </modules>
+    <version>1.0-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
