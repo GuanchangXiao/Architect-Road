@@ -4,7 +4,7 @@
 #
 ############################################################
 server:
-  port: 8066
+#  port: 8066
   tomcat:
     uri-encoding: UTF-8
 ############################################################
@@ -32,6 +32,29 @@ spring:
     multipart:
       max-file-size: 512000     # 文件上传大小限制为500kb
       max-request-size: 512000  # 请求大小限制为500kb
+############################################################
+#
+# mybatis 配置
+#
+############################################################
+mybatis:
+  type-aliases-package: com.daliy.foodie.pojo          # 所有POJO类所在包路径
+  mapper-locations: classpath:mapper/*.xml      # mapper映射文件
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+############################################################
+#
+# mybatis mapper 配置
+#
+############################################################
+# 通用 Mapper 配置
+mapper:
+  # 配置baseMapper的路径
+  mappers: com.daliy.foodie.my.BaseMapper
+  # 在进行数据库操作的的时候，判断表达式 username != null, 是否追加 username != ''
+  not-empty: false
+  identity: MYSQL
 # 分页插件配置
 pagehelper:
   helperDialect: mysql
