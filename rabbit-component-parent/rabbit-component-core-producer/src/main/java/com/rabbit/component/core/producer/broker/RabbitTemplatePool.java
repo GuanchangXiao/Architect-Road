@@ -6,6 +6,11 @@ import com.google.common.collect.Maps;
 import com.rabbit.component.api.exception.MessageRuntimeException;
 import com.rabbit.component.api.message.Message;
 import com.rabbit.component.api.message.MessageType;
+import com.rabbit.component.common.convert.GenericMessageConverter;
+import com.rabbit.component.common.convert.RabbitMessageConverter;
+import com.rabbit.component.common.serializer.Serializer;
+import com.rabbit.component.common.serializer.SerializerFactory;
+import com.rabbit.component.common.serializer.impl.JacksonSerializerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -27,6 +32,7 @@ public class RabbitTemplatePool implements RabbitTemplate.ConfirmCallback {
 
     private Map<String, RabbitTemplate> RABBIT_TEMPLATE_MAP = Maps.newConcurrentMap();
     private Splitter splitter = Splitter.on("#");
+    private SerializerFactory serializerFactory = JacksonSerializerFactory.INSTANCE;
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -48,7 +54,12 @@ public class RabbitTemplatePool implements RabbitTemplate.ConfirmCallback {
             if (!messageType.equals(MessageType.RAPID)) {
                 template.setConfirmCallback(this::confirm);
             }
-//            template.setMessageConverter();
+
+            // 设置序列化装换器
+            Serializer serializer = serializerFactory.create();
+            GenericMessageConverter gmc = new GenericMessageConverter(serializer);
+            RabbitMessageConverter converter = new RabbitMessageConverter(gmc);
+            template.setMessageConverter(converter);
 
             RABBIT_TEMPLATE_MAP.putIfAbsent(topic, template);
         }
