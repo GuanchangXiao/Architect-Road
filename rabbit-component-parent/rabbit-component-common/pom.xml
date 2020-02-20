@@ -11,5 +11,16 @@
 
     <artifactId>rabbit.component.common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.architect.road</groupId>
+            <artifactId>rabbit.component.api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+    </dependencies>
 </project>
