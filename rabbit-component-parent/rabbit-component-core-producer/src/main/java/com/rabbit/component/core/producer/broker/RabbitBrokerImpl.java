@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by perl on 2020-02-19.
@@ -19,7 +18,7 @@ import java.util.Map;
 public class RabbitBrokerImpl implements RabbitBroker {
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private RabbitTemplatePool rabbitTemplatePool;
 
     @Override
     public void rapidSend(Message message) {
@@ -53,7 +52,7 @@ public class RabbitBrokerImpl implements RabbitBroker {
         // 生产唯一id messageId + # + 当前时间戳
         String correlationString = String.format("%s#%s", messageId,System.currentTimeMillis());
         CorrelationData correlationData = new CorrelationData(correlationString);
-
+        RabbitTemplate rabbitTemplate = rabbitTemplatePool.getTemplate(message);
         AsyncBaseQueue.submit(() -> rabbitTemplate.convertAndSend(topic, routingKey, message, correlationData));
 //        rabbitTemplate.convertAndSend(topic, routingKey, message, correlationData);
         log.info("#RabbitBrokerImpl.sendKernel# Send Message : {}", messageId);

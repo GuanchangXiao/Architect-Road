@@ -1,13 +1,11 @@
 package com.rabbit.component.core.producer.broker;
 
 import com.google.common.base.Preconditions;
-import com.rabbit.component.api.exception.MessageException;
 import com.rabbit.component.api.exception.MessageRuntimeException;
 import com.rabbit.component.api.inteface.MessageProducer;
 import com.rabbit.component.api.inteface.SendCallback;
 import com.rabbit.component.api.message.Message;
 import com.rabbit.component.api.message.MessageType;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
