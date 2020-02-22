@@ -1,6 +1,7 @@
 package com.rabbit.component.api.message;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Created by perl on 2020-02-19.
@@ -16,11 +17,12 @@ import lombok.AllArgsConstructor;
  *  最终一致
  */
 @AllArgsConstructor
-public enum  MessageType {
-    RAPID(0,"RAPID"),
-    CONFIRM(1,"CONFIRM"),
-    RELIANT(2,"RELIANT");
+@Getter
+public enum MessageType {
+    RAPID("0","RAPID"),
+    CONFIRM("1","CONFIRM"),
+    RELIANT("2","RELIANT");
 
-    int code;
-    String type;
+    private String code;
+    private String type;
 }
