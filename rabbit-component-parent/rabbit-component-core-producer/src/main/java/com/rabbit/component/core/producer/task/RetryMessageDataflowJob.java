@@ -44,9 +44,13 @@ public class RetryMessageDataflowJob implements DataflowJob<BrokerMessage> {
         messageList.stream()
                 .forEach(message -> {
                     if (message.getTryCount() >= Consts.MAX_RETRY_COUNT) {
+                        // 消息超过最大try count则默认失效
                         messageDBStoreService.failure(message.getMessageId());
                         log.warn("Message Already Time Out To Max >> MessageId : {}", message.getMessageId());
                     }else {
+                        // 重发消息之前需要更新try count
+                        messageDBStoreService.updateTryCount(message.getMessageId());
+                        // 重新发送消息
                         rabbitBroker.reliantSend(message.getMessage());
                     }
                 });

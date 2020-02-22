@@ -6,6 +6,7 @@ import com.rabbit.component.api.inteface.MessageProducer;
 import com.rabbit.component.api.inteface.SendCallback;
 import com.rabbit.component.api.message.Message;
 import com.rabbit.component.api.message.MessageType;
+import com.rabbit.component.core.producer.store.MessageStoreHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +43,11 @@ public class ProducerClient implements MessageProducer {
 
     @Override
     public void send(List<Message> messageList) throws MessageRuntimeException {
-
+        messageList.forEach(message -> {
+            message.setMessageType(MessageType.RAPID);
+            MessageStoreHolder.addMessage(message);
+        });
+        rabbitBroker.batchSend();
     }
 
     @Override

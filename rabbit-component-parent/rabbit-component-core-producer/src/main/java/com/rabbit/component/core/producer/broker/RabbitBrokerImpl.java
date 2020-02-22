@@ -6,6 +6,7 @@ import com.rabbit.component.common.commons.Consts;
 import com.rabbit.component.common.commons.MessageStatus;
 import com.rabbit.component.core.producer.entity.BrokerMessage;
 import com.rabbit.component.core.producer.service.MessageDBStoreService;
+import com.rabbit.component.core.producer.store.MessageStoreHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by perl on 2020-02-19.
@@ -53,8 +53,8 @@ public class RabbitBrokerImpl implements RabbitBroker {
     }
 
     @Override
-    public void batchSend(List<Message> messageList) {
-
+    public void batchSend() {
+        MessageStoreHolder.getAll().forEach(message -> sendKernel(message));
     }
 
     /**
