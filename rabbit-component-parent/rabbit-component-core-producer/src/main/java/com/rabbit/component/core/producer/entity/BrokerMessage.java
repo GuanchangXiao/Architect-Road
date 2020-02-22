@@ -21,7 +21,7 @@ public class BrokerMessage implements Serializable {
 
     private Integer tryCount = 0;
 
-    private String status;
+    private MessageStatus status;
 
     private Date nextRetry;
 

@@ -11,6 +11,7 @@ import com.rabbit.component.common.convert.RabbitMessageConverter;
 import com.rabbit.component.common.serializer.Serializer;
 import com.rabbit.component.common.serializer.SerializerFactory;
 import com.rabbit.component.common.serializer.impl.JacksonSerializerFactory;
+import com.rabbit.component.core.producer.service.MessageDBStoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -36,6 +37,9 @@ public class RabbitTemplatePool implements RabbitTemplate.ConfirmCallback {
 
     @Autowired
     private ConnectionFactory connectionFactory;
+
+    @Autowired
+    private MessageDBStoreService messageDBStoreService;
 
     public RabbitTemplate getTemplate(Message message) throws MessageRuntimeException {
         Preconditions.checkNotNull(message);
@@ -74,6 +78,7 @@ public class RabbitTemplatePool implements RabbitTemplate.ConfirmCallback {
         Long timestamp = Long.valueOf(dataList.get(1));
 
         if (ack) {
+            messageDBStoreService.success(messageId);
             log.info("#RabbitTemplatePool.confirm#Message is Success >> messageId : {}, sendTime : {}", messageId, timestamp);
         }else {
             log.error("#RabbitTemplatePool.confirm#Message is Failed >> messageId : {}, sendTime : {}", messageId, timestamp);

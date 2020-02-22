@@ -3,7 +3,7 @@ package com.rabbit.component.core.producer.service.impl;
 import com.rabbit.component.common.commons.MessageStatus;
 import com.rabbit.component.core.producer.entity.BrokerMessage;
 import com.rabbit.component.core.producer.mapper.BrokerMessageMapper;
-import com.rabbit.component.core.producer.service.RabbitDBStoreService;
+import com.rabbit.component.core.producer.service.MessageDBStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by perl on 2020-02-22.
  */
-public class RabbitDBStoreServiceImpl implements RabbitDBStoreService {
+public class MessageDBStoreServiceImpl implements MessageDBStoreService {
 
     @Autowired
     private BrokerMessageMapper messageMapper;

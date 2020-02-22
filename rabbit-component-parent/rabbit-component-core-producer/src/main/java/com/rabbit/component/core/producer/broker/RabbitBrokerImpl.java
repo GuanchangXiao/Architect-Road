@@ -5,7 +5,7 @@ import com.rabbit.component.api.message.MessageType;
 import com.rabbit.component.common.commons.Consts;
 import com.rabbit.component.common.commons.MessageStatus;
 import com.rabbit.component.core.producer.entity.BrokerMessage;
-import com.rabbit.component.core.producer.service.RabbitDBStoreService;
+import com.rabbit.component.core.producer.service.MessageDBStoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -27,24 +27,24 @@ public class RabbitBrokerImpl implements RabbitBroker {
     private RabbitTemplatePool rabbitTemplatePool;
 
     @Autowired
-    private RabbitDBStoreService rabbitDBStoreService;
+    private MessageDBStoreService messageDBStoreService;
 
     @Override
     public void rapidSend(Message message) {
-        message.setMessageType(MessageType.RAPID.getCode());
+        message.setMessageType(MessageType.RAPID);
         sendKernel(message);
     }
 
     @Override
     public void confirmSend(Message message) {
-        message.setMessageType(MessageType.CONFIRM.getCode());
+        message.setMessageType(MessageType.CONFIRM);
         sendKernel(message);
     }
 
     @Override
     public void reliantSend(Message message) {
-        message.setMessageType(MessageType.RELIANT.getCode());
-        BrokerMessage brokerMessage = rabbitDBStoreService.selectByMessageId(message.getMessageId());
+        message.setMessageType(MessageType.RELIANT);
+        BrokerMessage brokerMessage = messageDBStoreService.selectByMessageId(message.getMessageId());
         if (brokerMessage == null) {
             // 如果没有获取到消息记录 则说明是一条新消息需要入库
             storeMessage2DB(message);
@@ -84,13 +84,13 @@ public class RabbitBrokerImpl implements RabbitBroker {
         BrokerMessage brokerMessage = new BrokerMessage();
         brokerMessage.setMessageId(message.getMessageId());
         brokerMessage.setMessage(message);
-        brokerMessage.setStatus(MessageStatus.SEND_READY.getCode());
+        brokerMessage.setStatus(MessageStatus.SEND_READY);
         // 设置时间
         Date now = new Date();
         brokerMessage.setCreateTime(now);
         brokerMessage.setUpdateTime(now);
         brokerMessage.setNextRetry(DateUtils.addMinutes(now, Consts.RETRY_TIME_OUT));
         // 入库
-        rabbitDBStoreService.insert(brokerMessage);
+        messageDBStoreService.insert(brokerMessage);
     }
 }

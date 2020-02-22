@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by perl on 2020-02-22.
  */
-public interface RabbitDBStoreService {
+public interface MessageDBStoreService {
 
     /**
      * 插入一条新的Message

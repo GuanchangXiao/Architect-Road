@@ -19,10 +19,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum MessageType {
-    RAPID("0","RAPID"),
-    CONFIRM("1","CONFIRM"),
-    RELIANT("2","RELIANT");
+    RAPID("0"),
+    CONFIRM("1"),
+    RELIANT("2");
 
     private String code;
-    private String type;
 }

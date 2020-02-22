@@ -23,5 +23,5 @@ public class Message implements Serializable {
     private String routingKey = "";
     private Map<String, Object> attributes = new HashMap<>();
     private int delay;
-    private String messageType = MessageType.CONFIRM.getCode();
+    private MessageType messageType = MessageType.CONFIRM;
 }

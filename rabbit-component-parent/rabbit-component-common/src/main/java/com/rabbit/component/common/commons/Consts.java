@@ -7,4 +7,6 @@ package com.rabbit.component.common.commons;
 public class Consts {
 
     public static final int RETRY_TIME_OUT = 1;
+
+    public static final int MAX_RETRY_COUNT = 3;
 }
