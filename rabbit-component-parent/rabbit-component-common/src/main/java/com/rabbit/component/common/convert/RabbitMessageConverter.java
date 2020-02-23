@@ -21,6 +21,9 @@ public class RabbitMessageConverter implements MessageConverter {
 
     @Override
     public Message toMessage(Object object, MessageProperties messageProperties) throws MessageConversionException {
+        // 设置延迟时间
+        com.rabbit.component.api.message.Message message = (com.rabbit.component.api.message.Message) object;
+        messageProperties.setDelay(message.getDelay());
         return this.converter.toMessage(object, messageProperties);
     }
 
