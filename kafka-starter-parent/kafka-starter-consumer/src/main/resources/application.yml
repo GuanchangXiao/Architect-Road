@@ -1,0 +1,21 @@
+server:
+  servlet:
+    context-path: /consumer
+
+  port: 8002
+
+spring:
+  kafka:
+    bootstrap-servers: 10.211.55.31:9092
+    consumer:
+      # 消息签收机制
+      enable-auto-commit: false
+      # 指定在读取一个没有偏移量或者偏移量无效的分区时的消费策略
+      # latest：从最新的记录开始消费（在消费者启动之前的数据无法获取）
+      # earliest：从起始位置消费分区的数据
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: manual
+      concurrency: 5 #设置线程数

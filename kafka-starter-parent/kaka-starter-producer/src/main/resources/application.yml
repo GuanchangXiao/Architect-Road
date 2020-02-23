@@ -1,0 +1,20 @@
+server:
+  servlet:
+    context-path: /producer
+
+  port: 8001
+
+spring:
+  kafka:
+    bootstrap-servers: 10.211.55.31:9092
+    producer:
+      retries: 0 # 发送消息重试次数
+      batch-size: 16384 #批量发送消息的大小
+      buffer-memory: 33554432 #缓存区大小 32M
+      # 配置序列化时使用的对象
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # acks=0，表示生产者在成功写入消息前不会等待任何来自服务端的响应。
+      # acks=1，表示只要集群master收到消息，生产者就会收到一个来自服务端的成功响应。
+      # acks=-1，表示分区leader必须等待消息成功写入到所有ISR副本中才认为请求发送成功。提供最高的消息可靠性保证，效率是最差的。
+      acks: 1
