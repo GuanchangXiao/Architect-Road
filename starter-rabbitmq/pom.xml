@@ -20,9 +20,6 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>rabbit-component</module>
-    </modules>
 
     <dependencies>
         <dependency>
