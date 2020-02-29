@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: service-register-center
+  profiles:
+    active: dev
+server:
+  port: 20000
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+  instance:
+    hostname: localhost
