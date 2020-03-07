@@ -11,9 +11,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.daliy.foodie","org.n3r.idworker"})
 @MapperScan(basePackages = "com.daliy.foodie.mapper")
-public class Application {
+public class DFSApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(DFSApplication.class, args);
     }
 }
