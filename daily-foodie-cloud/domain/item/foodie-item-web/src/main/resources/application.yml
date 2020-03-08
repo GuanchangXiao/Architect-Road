@@ -4,7 +4,6 @@
 #
 ############################################################
 server:
-#  port: 10001
   tomcat:
     uri-encoding: UTF-8
   max-http-header-size: 80KB
@@ -21,12 +20,8 @@ spring:
     active: dev
   datasource:                                           # 数据源的相关配置
     type: com.zaxxer.hikari.HikariDataSource          # 数据源类型：HikariCP
-#    driver-class-name: com.mysql.jdbc.Driver          # mysql驱动
-#    Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
-#    url: jdbc:mysql://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    #    password: root
     hikari:
       connection-timeout: 30000       # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 默认:30秒
       minimum-idle: 5                 # 最小连接数
@@ -49,8 +44,6 @@ spring:
 mybatis:
   type-aliases-package: com.foodie.item.pojo          # 所有POJO类所在包路径
   mapper-locations: classpath:mapper/*.xml      # mapper映射文件
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 ############################################################
 #
