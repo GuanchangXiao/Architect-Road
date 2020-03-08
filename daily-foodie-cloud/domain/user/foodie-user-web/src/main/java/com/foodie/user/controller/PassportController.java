@@ -134,6 +134,7 @@ public class PassportController extends UserBaseController {
     /**
      * 注册登录成功后，同步cookie和redis中的购物车数据
      */
+    // TODO 后续放入购物车模块
 //    private void synchShopcartData(String userId, HttpServletRequest request,
 //                                   HttpServletResponse response) {
 //
