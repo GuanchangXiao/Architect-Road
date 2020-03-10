@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: eureka-server-peer-two
+server:
+  port: 20002
+eureka:
+  instance:
+    hostname: service-register-center-two
+  client:
+    service-url:
+      defaultZone: http://service-register-center-one:20001/eureka
