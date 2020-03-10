@@ -1,10 +1,13 @@
 package com.foodie.order.pojo.vo;
 
-public class OrderVO {
+import com.foodie.shopcart.pojo.bo.ShopcartBO;
+import lombok.Data;
 
+import java.util.List;
+
+@Data
+public class OrderVO {
     private String orderId;
     private MerchantOrdersVO merchantOrdersVO;
-
-    // TODO 后续依赖购物车模块
-//    private List<ShopcartBO> toBeRemovedShopcatdList;
+    private List<ShopcartBO> toBeRemovedShopcatdList;
 }

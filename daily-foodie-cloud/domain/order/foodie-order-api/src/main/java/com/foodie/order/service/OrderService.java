@@ -1,6 +1,8 @@
 package com.foodie.order.service;
 
 import com.foodie.order.pojo.OrderStatus;
+import com.foodie.order.pojo.bo.PlaceOrderBO;
+import com.foodie.order.pojo.vo.OrderVO;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("order-api")
@@ -8,10 +10,9 @@ public interface OrderService {
 
     /**
      * 用于创建订单相关信息
-     * @param submitOrderBO
+     * @param placeOrderBO
      */
-    // TODO 移植到购物车模块
-//    OrderVO createOrder(List<ShopcartBO> shopcartList, SubmitOrderBO submitOrderBO);
+    OrderVO createOrder(PlaceOrderBO placeOrderBO);
 
     /**
      * 修改订单状态
