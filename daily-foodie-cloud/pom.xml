@@ -27,6 +27,12 @@
         <module>domain/order/foodie-order-api</module>
         <module>domain/order/foodie-order-service</module>
         <module>domain/order/foodie-order-web</module>
+        <!-- shopcart modules -->
+        <module>domain/shopcart/foodie-shopcart-pojo</module>
+        <module>domain/shopcart/foodie-shopcart-api</module>
+        <module>domain/shopcart/foodie-shopcart-service</module>
+        <module>domain/shopcart/foodie-shopcart-web</module>
+
     </modules>
 
     <groupId>com.foodie.springcloud</groupId>
