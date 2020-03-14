@@ -13,35 +13,35 @@
     <artifactId>foodie-order-service</artifactId>
 
     <dependencies>
-        <!-- item api-->
+        <!-- item api -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>foodie-item-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- user api-->
+        <!-- user api -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>foodie-user-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- order api-->
+        <!-- order api -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>foodie-order-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- order mapper-->
+        <!-- shopcart api -->
+        <dependency>
+            <groupId>com.foodie.springcloud</groupId>
+            <artifactId>foodie-shopcart-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- order mapper -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>foodie-order-mapper</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!-- TODO 后续使用feign组件实现服务调用-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
 </project>

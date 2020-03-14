@@ -4,9 +4,11 @@ import com.foodie.order.pojo.Orders;
 import com.foodie.order.pojo.vo.OrderStatusCountsVO;
 import com.foodie.pojo.JSONResult;
 import com.foodie.pojo.PagedGridResult;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("myorder-api")
+@FeignClient("foodie-order-service")
+@RequestMapping("my-order-api")
 public interface MyOrdersService {
 
     /**

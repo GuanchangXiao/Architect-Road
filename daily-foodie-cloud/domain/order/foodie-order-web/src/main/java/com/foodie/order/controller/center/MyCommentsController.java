@@ -1,6 +1,7 @@
 package com.foodie.order.controller.center;
 
 import com.foodie.enums.YesOrNo;
+import com.foodie.item.service.ItemCommentsService;
 import com.foodie.order.controller.OrderBaesController;
 import com.foodie.order.pojo.OrderItems;
 import com.foodie.order.pojo.Orders;
@@ -14,11 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -33,14 +31,8 @@ public class MyCommentsController extends OrderBaesController {
     @Autowired
     private MyOrdersService myOrdersService;
 
-//    @Autowired
-//    private ItemCommentsService itemCommentsService;
-
     @Autowired
-    private LoadBalancerClient loadBalancerClient;
-
-    @Autowired
-    private RestTemplate restTemplate;
+    private ItemCommentsService itemCommentsService;
 
     @ApiOperation(value = "查询订单列表", notes = "查询订单列表", httpMethod = "POST")
     @PostMapping("/pending")
@@ -76,8 +68,6 @@ public class MyCommentsController extends OrderBaesController {
             @RequestParam String orderId,
             @RequestBody List<OrderItemsCommentBO> commentList) {
 
-        System.out.println(commentList);
-
         // 判断用户和订单是否关联
         JSONResult checkResult = myOrdersService.checkUserOrder(userId, orderId);
         if (checkResult.getStatus() != HttpStatus.OK.value()) {
@@ -112,16 +102,9 @@ public class MyCommentsController extends OrderBaesController {
             pageSize = COMMON_PAGE_SIZE;
         }
 
-//        PagedGridResult grid = myCommentsService.queryMyComments(userId,
-//                page,
-//                pageSize);
-
-//        TODO 集成Feign
-        ServiceInstance instance = loadBalancerClient.choose("FOODIE-ITEM-SERVICE");
-        String url = String.format("http://%s:%s/item-comments-api/my-comments",
-                instance.getHost(),
-                instance.getPort());
-        PagedGridResult grid = restTemplate.getForObject(url, PagedGridResult.class);
+        PagedGridResult grid = itemCommentsService.queryMyComments(userId,
+                page,
+                pageSize);
 
         return JSONResult.ok(grid);
     }

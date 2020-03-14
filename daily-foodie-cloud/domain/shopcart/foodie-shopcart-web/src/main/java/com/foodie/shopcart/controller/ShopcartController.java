@@ -2,7 +2,7 @@ package com.foodie.shopcart.controller;
 
 import com.foodie.pojo.JSONResult;
 import com.foodie.shopcart.pojo.bo.ShopcartBO;
-import com.fooide.shopcart.service.ShopcartService;
+import com.foodie.shopcart.service.ShopcartService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

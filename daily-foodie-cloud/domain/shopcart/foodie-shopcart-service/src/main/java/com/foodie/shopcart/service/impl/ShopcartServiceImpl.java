@@ -3,7 +3,7 @@ package com.foodie.shopcart.service.impl;
 import com.foodie.component.RedisOperator;
 import com.foodie.shopcart.pojo.bo.ShopcartBO;
 import com.foodie.utils.JsonUtils;
-import com.fooide.shopcart.service.ShopcartService;
+import com.foodie.shopcart.service.ShopcartService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

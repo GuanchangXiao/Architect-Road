@@ -1,6 +1,7 @@
-package com.fooide.shopcart.service;
+package com.foodie.shopcart.service;
 
 import com.foodie.shopcart.pojo.bo.ShopcartBO;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Created by perl on 2020-03-08.
  */
+@FeignClient("foodie-shopcart-service")
 @RequestMapping("shopcart-api")
 public interface ShopcartService {
 
@@ -64,7 +66,8 @@ public interface ShopcartService {
      * @param amount
      * @return
      */
-    boolean updateAmountFormCart(@RequestParam String userId,
-                                 @RequestParam String itemSpecId,
-                                 @RequestParam Integer amount);
+    @PostMapping("update-amount")
+    boolean updateAmountFormCart(@RequestParam("userId") String userId,
+                                 @RequestParam("itemSpecId") String itemSpecId,
+                                 @RequestParam("amount") Integer amount);
 }

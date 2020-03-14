@@ -1,6 +1,7 @@
 package com.foodie.order.service.impl.center;
 
 import com.foodie.enums.YesOrNo;
+import com.foodie.item.service.ItemCommentsService;
 import com.foodie.order.mapper.OrderItemsMapper;
 import com.foodie.order.mapper.OrderStatusMapper;
 import com.foodie.order.mapper.OrdersMapper;
@@ -13,11 +14,9 @@ import com.foodie.service.BaseService;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -36,14 +35,8 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
     @Autowired
     public OrderStatusMapper orderStatusMapper;
 
-//    @Autowired
-//    public ItemsCommentsMapperCustom itemsCommentsMapperCustom;
-
     @Autowired
-    public LoadBalancerClient loadBalancerClient;
-
-    @Autowired
-    public RestTemplate restTemplate;
+    public ItemCommentsService itemCommentsService;
 
     @Autowired
     private Sid sid;
@@ -68,13 +61,7 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("commentList", commentList);
-//        itemsCommentsMapperCustom.saveComments(map);
-        // TODO 后续改用Feign组件调用
-        ServiceInstance instance = loadBalancerClient.choose("FOODIE-ITEM-SERVICE");
-        String url = String.format("http://%s:%s/item-comments-api/save-comments",
-                instance.getHost(),
-                instance.getPort());
-        restTemplate.postForLocation(url, map);
+        itemCommentsService.saveComments(map);
 
         // 2. 修改订单表改已评价 orders
         Orders order = new Orders();

@@ -13,7 +13,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @MapperScan(basePackages = "com.foodie.item.mapper")
 @ComponentScan(basePackages = {"com.foodie.item", "org.n3r.idworker"})
 @EnableDiscoveryClient
-// TODO Feign Annotation
 public class ItemApplication {
 
     public static void main(String[] args) {

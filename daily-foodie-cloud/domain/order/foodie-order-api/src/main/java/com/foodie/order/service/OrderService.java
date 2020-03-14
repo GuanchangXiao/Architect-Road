@@ -3,8 +3,10 @@ package com.foodie.order.service;
 import com.foodie.order.pojo.OrderStatus;
 import com.foodie.order.pojo.bo.PlaceOrderBO;
 import com.foodie.order.pojo.vo.OrderVO;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+@FeignClient("foodie-order-service")
 @RequestMapping("order-api")
 public interface OrderService {
 
@@ -12,6 +14,7 @@ public interface OrderService {
      * 用于创建订单相关信息
      * @param placeOrderBO
      */
+    @PostMapping("create-order")
     OrderVO createOrder(PlaceOrderBO placeOrderBO);
 
     /**

@@ -2,10 +2,12 @@ package com.foodie.user.service;
 
 import com.foodie.user.pojo.UserAddress;
 import com.foodie.user.pojo.bo.AddressBO;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@FeignClient("foodie-user-service")
 @RequestMapping("user-address-api")
 public interface AddressService {
 

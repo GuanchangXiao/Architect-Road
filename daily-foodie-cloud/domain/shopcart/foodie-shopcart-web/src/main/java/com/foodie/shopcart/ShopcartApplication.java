@@ -9,9 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
  * Created by perl on 2020-03-10.
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.foodie.shopcart", "org.n3r.idworker"})
+@ComponentScan(basePackages = {
+    "com.foodie.shopcart",
+    "com.foodie.component",
+    "org.n3r.idworker"
+})
 @EnableDiscoveryClient
-// TODO Feign Annotation
 public class ShopcartApplication {
 
     public static void main(String[] args) {
