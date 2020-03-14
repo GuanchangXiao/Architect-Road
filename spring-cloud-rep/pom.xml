@@ -12,7 +12,9 @@
         <module>eureka/eureka-server</module>
         <module>eureka/eureka-client</module>
         <module>eureka/eureka-consumer</module>
-        <module>eureka/eureka-peer</module>
+        <!-- eureka peer -->
+        <module>eureka/peer/service-register-center-one</module>
+        <module>eureka/peer/service-register-center-two</module>
     </modules>
 
     <dependencyManagement>
