@@ -15,6 +15,9 @@
         <!-- eureka peer -->
         <module>eureka/peer/service-register-center-one</module>
         <module>eureka/peer/service-register-center-two</module>
+        <!-- ribbon -->
+        <module>ribbon/ribbon-consumer</module>
+
     </modules>
 
     <dependencyManagement>
