@@ -14,3 +14,38 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+############################################################
+#
+# 配置Ribbon  优先级： 局部 > 全局
+#
+############################################################
+# 全局配置
+ribbon:
+  ConnectTimeout: 1000
+  ReadTimeout: 3000
+# 局部配置
+foodie-user-service:
+  ribbon:
+    ConnectTimeout: 2000
+    ReadTimeout: 4000
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 2
+    OkToRetryOnAllOperations: true
+############################################################
+#
+# 配置Feign  如果Feign和Ribbon配置相同属性时, Feign > Ribbon
+#             并且也遵循   局部 > 全局
+#
+############################################################
+feign:
+  client:
+    config:
+      # Feign全局配置
+      default:
+       connectTimeout: 1000
+       readTimeout: 3000
+      # Feign局部配置
+      foodie-user-service:
+       connectTimeout: 1500
+       readTimeout: 5000
