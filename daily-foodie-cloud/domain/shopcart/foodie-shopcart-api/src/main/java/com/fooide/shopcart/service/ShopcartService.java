@@ -1,10 +1,7 @@
 package com.fooide.shopcart.service;
 
 import com.foodie.shopcart.pojo.bo.ShopcartBO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +20,51 @@ public interface ShopcartService {
     @PostMapping("counts")
     ShopcartBO getBuyCountsFromShopcart(@RequestParam("shopcartList") List<ShopcartBO> shopcartList,
                                         @RequestParam("specId") String specId);
+
+    /**
+     * 获取购物车中所有商品
+     * @param userId
+     * @return
+     */
+    @GetMapping("list")
+    List<ShopcartBO> listItemFormCart(@RequestParam("userId") String userId);
+
+    /**
+     * 添加购物车商品
+     * @param userId
+     * @param shopcartBO
+     * @return
+     */
+    @PostMapping("add-item")
+    boolean addItemToCart(@RequestParam("userId") String userId,
+                          @RequestBody ShopcartBO shopcartBO);
+
+    /**
+     * 删除购物车商品
+     * @param userId
+     * @param itemSpecId
+     * @return
+     */
+    @PostMapping("delete-item")
+    boolean deleteItemFormCart(@RequestParam("userId") String userId,
+                               @RequestParam("itemSpecId") String itemSpecId);
+
+    /**
+     * 清空购物车
+     * @param userId
+     * @return
+     */
+    @PostMapping("clear-cart")
+    boolean clearCart(@RequestParam("userId") String userId);
+
+    /**
+     * 修改购物车中商品数量
+     * @param userId
+     * @param itemSpecId
+     * @param amount
+     * @return
+     */
+    boolean updateAmountFormCart(@RequestParam String userId,
+                                 @RequestParam String itemSpecId,
+                                 @RequestParam Integer amount);
 }
