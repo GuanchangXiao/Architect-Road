@@ -54,3 +54,14 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 3000   #超时时间
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

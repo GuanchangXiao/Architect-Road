@@ -10,9 +10,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hystrix-fallback</artifactId>
-    <name>hystrix-fallback</name>
+    <artifactId>hystrix-turbine</artifactId>
+    <name>hystrix-turbine</name>
     <packaging>jar</packaging>
+
 
     <dependencies>
         <dependency>
@@ -26,6 +27,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-turbine</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -34,11 +40,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.micro.service</groupId>
-            <artifactId>feign-client-intf</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
+
 </project>
