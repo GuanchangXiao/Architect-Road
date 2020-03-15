@@ -3,7 +3,6 @@ package com.springcloud.feign.client;
 import com.springcloud.feign.client.intf.Friend;
 import com.springcloud.feign.client.intf.IService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,5 +39,10 @@ public class FeignController implements  IService{
         }
         log.info("retry : {}",port);
         return "retry : " + port;
+    }
+
+    @Override
+    public String error() {
+        throw new RuntimeException("hystrix fallback test");
     }
 }

@@ -20,4 +20,7 @@ public interface IService {
 
     @GetMapping("retry")
     String retry(@RequestParam("timeout") int timeout);
+
+    @GetMapping("error")
+    String error();
 }

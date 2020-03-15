@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: hystrix-consumer
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  port: 40000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka/
+
+feign:
+  hystrix:
+    enabled: true  # 开启hystrix
+
+feign-client:
+  ribbon:
+    MaxAutoRetries: 0  # 每台机器最大重试次数
+    MaxAutoRetriesNextServer: 0 # 可以重试几台机器
+    ConnectTimeout: 5000  # 连接超时时间
+    ReadTimeout: 10000  # 业务处理超时时间
+    OkToRetryOnAllOperations: true # 允许在所有HTTP METHOD进行重试
+
+hystrix:
+  command:
+    default:
+      fallback:
+        enabled: true  # 开启fallback
+      requestCache:
+        enabled: true # 开启cache
+      circuitBreaker:
+        enabled: true # 开启熔断功能
+        forceOpen: false # 是否强制开启熔断器开关
+        forceClosed: false # 是否强制关闭熔断器开关
+        requestVolumeThreshold: 5 # 满足熔断的前提条件（在时间窗口内的请求数量限制）
+        errorThresholdPercentage: 50 # 满足熔断的前提条件（失败率--超时、异常等   超过50%）
+        sleepWindowInMilliseconds:  10000 # 熔断开启后需要多少秒进入半开状态
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 20000  # 设置时间窗口
+      execution:
+        timeout:
+          enabled: true  # 开启超时
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000   #超时时间
+            interruptOnTimeout: true   # 超时的时候终止线程
+            interruptOnFutureCancel: true # 取消的时候终止线程
+    cacheKey:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000   #超时时间
