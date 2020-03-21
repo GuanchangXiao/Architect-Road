@@ -90,6 +90,7 @@ public class OrdersController extends OrderBaesController {
         // 为了方便测试购买，所以所有的支付金额都统一改为1分钱
         merchantOrdersVO.setAmount(1);
 
+        // TODO 使用feign 调用
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("imoocUserId","imooc");
@@ -119,7 +120,6 @@ public class OrdersController extends OrderBaesController {
 
     @PostMapping("getPaidOrderInfo")
     public JSONResult getPaidOrderInfo(String orderId) {
-
         OrderStatus orderStatus = orderService.queryOrderStatusInfo(orderId);
         return JSONResult.ok(orderStatus);
     }

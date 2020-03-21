@@ -8,8 +8,11 @@ import com.foodie.utils.CookieUtils;
 import com.foodie.utils.JsonUtils;
 import com.foodie.utils.MD5Utils;
 import com.foodie.component.RedisOperator;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "注册登录", tags = {"用于注册登录的相关接口"})
 @RestController
 @RequestMapping("passport")
+@Slf4j
 public class PassportController extends UserBaseController {
 
     @Autowired
@@ -97,6 +101,20 @@ public class PassportController extends UserBaseController {
 
     @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
     @PostMapping("/login")
+    @HystrixCommand(
+            commandKey = "loginFail",  //全局标识
+            groupKey = "password",  //全局服务分组
+            fallbackMethod = "loginFail"  // 指定发生错误时 执行的方法 必须在同一个类中 public or private
+//            threadPoolKey = "thredPollLogin", // 指定线程组 多个服务可以共用一个线程组
+//            threadPoolProperties = {
+//                    @HystrixProperty(name = "coreSize", value = "20"),
+//                    @HystrixProperty(name = "maxQueueSize", value = "40"),
+//                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "15"),
+//            }
+//            ignoreExceptions = {
+//                    IllegalArgumentException.class // 指定需要排除的异常，即就算发生这种异常也不会触发Hystrix降级策略
+//            }
+    )
     public JSONResult login(@RequestBody UserBO userBO,
                                  HttpServletRequest request,
                                  HttpServletResponse response) throws Exception {
@@ -228,4 +246,12 @@ public class PassportController extends UserBaseController {
         return JSONResult.ok();
     }
 
+
+    public JSONResult loginFail(UserBO userBO,
+                                HttpServletRequest request,
+                                HttpServletResponse response,
+                                Throwable throwable) throws Exception{
+        log.error(throwable.getMessage());
+        return JSONResult.errorMsg("用户名密码错误");
+    }
 }

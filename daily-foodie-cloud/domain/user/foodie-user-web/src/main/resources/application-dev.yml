@@ -13,3 +13,49 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#### actuator config
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+#        include: 'health,info'
+  security:
+    enabled: false
+
+
+#### hystrix config
+hystrix:
+  command:
+    default:  #  global config
+      fallback:
+        enabled: true
+      ciruit-breaker:
+        enabled: true
+        error-threshold-precentage: 30
+        request-volume-threshold: 5
+        sleep-window-in-milliseconds: 10000
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            interrupt-on-timeout: true
+            interrupt-on-cancel: true
+            timeout-in-milliseconds: 10000
+      metrics:
+        rolling-stats:
+          time-in-milliseconds: 20000  # time window
+#          num-buckets: 10
+#        rolling-percentile:
+#          time-in-milliseconds: 20000
+#          bucket-size: 300
+    loginFail:
+      execution:
+        isolation:
+          thread:
+            timeout-in-milliseconds: 3000  # override to global config

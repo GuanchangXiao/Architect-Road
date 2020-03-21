@@ -13,3 +13,17 @@ spring:
 #mybatis:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+#### actuator config
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  #        include: 'health,info'
+  security:
+    enabled: false

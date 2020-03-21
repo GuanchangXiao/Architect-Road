@@ -32,6 +32,8 @@
         <module>domain/shopcart/foodie-shopcart-api</module>
         <module>domain/shopcart/foodie-shopcart-service</module>
         <module>domain/shopcart/foodie-shopcart-web</module>
+        <module>platform/hystrix-turbine</module>
+        <module>platform/hystrix-dashboard</module>
 
     </modules>
 

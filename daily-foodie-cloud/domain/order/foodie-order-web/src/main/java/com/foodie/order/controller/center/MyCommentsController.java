@@ -1,8 +1,8 @@
 package com.foodie.order.controller.center;
 
 import com.foodie.enums.YesOrNo;
-import com.foodie.item.service.ItemCommentsService;
 import com.foodie.order.controller.OrderBaesController;
+import com.foodie.order.fallback.itemservice.ItemCommentsFeignClient;
 import com.foodie.order.pojo.OrderItems;
 import com.foodie.order.pojo.Orders;
 import com.foodie.order.pojo.bo.center.OrderItemsCommentBO;
@@ -32,7 +32,7 @@ public class MyCommentsController extends OrderBaesController {
     private MyOrdersService myOrdersService;
 
     @Autowired
-    private ItemCommentsService itemCommentsService;
+    private ItemCommentsFeignClient itemCommentsService;
 
     @ApiOperation(value = "查询订单列表", notes = "查询订单列表", httpMethod = "POST")
     @PostMapping("/pending")

@@ -1,5 +1,10 @@
 package com.foodie.order;
 
+import com.foodie.item.service.ItemService;
+import com.foodie.order.fallback.itemservice.ItemCommentsFeignClient;
+import com.foodie.shopcart.service.ShopcartService;
+import com.foodie.user.service.AddressService;
+import com.foodie.user.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -14,13 +19,30 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @SpringBootApplication
 @MapperScan(basePackages = "com.foodie.order.mapper")
-@ComponentScan(basePackages = {"com.foodie.order", "com.foodie.component", "org.n3r.idworker"})
+@ComponentScan(
+    basePackages = {
+        "com.foodie.order",
+        "com.foodie.component",
+        "org.n3r.idworker"
+    }
+)
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {
-        "com.foodie.user.service",
-        "com.foodie.item.service",
-        "com.foodie.shopcart.service"
-})
+@EnableFeignClients(
+//    basePackages = {
+//        "com.foodie.user.service",
+//        "com.foodie.item.service",
+//        "com.foodie.shopcart.service",
+//        "com.foodie.order.fallback.**"
+//    }
+//    解决Ambiguous mapping错误
+    clients = {
+        ItemCommentsFeignClient.class,
+        ItemService.class,
+        UserService.class,
+        AddressService.class,
+        ShopcartService.class
+    }
+)
 public class OrderApplication {
 
     public static void main(String[] args) {

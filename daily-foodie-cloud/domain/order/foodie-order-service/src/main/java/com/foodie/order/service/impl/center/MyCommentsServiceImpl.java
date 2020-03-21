@@ -1,7 +1,7 @@
 package com.foodie.order.service.impl.center;
 
 import com.foodie.enums.YesOrNo;
-import com.foodie.item.service.ItemCommentsService;
+import com.foodie.order.fallback.itemservice.ItemCommentsFeignClient;
 import com.foodie.order.mapper.OrderItemsMapper;
 import com.foodie.order.mapper.OrderStatusMapper;
 import com.foodie.order.mapper.OrdersMapper;
@@ -13,7 +13,6 @@ import com.foodie.order.service.center.MyCommentsService;
 import com.foodie.service.BaseService;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +35,7 @@ public class MyCommentsServiceImpl extends BaseService implements MyCommentsServ
     public OrderStatusMapper orderStatusMapper;
 
     @Autowired
-    public ItemCommentsService itemCommentsService;
+    public ItemCommentsFeignClient itemCommentsService;
 
     @Autowired
     private Sid sid;
