@@ -17,13 +17,17 @@
         <module>eureka/peer/service-register-center-two</module>
         <!-- ribbon -->
         <module>ribbon/ribbon-consumer</module>
+        <!-- feign -->
         <module>feign/feign-consumer</module>
         <module>feign/feign-client-intf</module>
         <module>feign/feign-client</module>
         <module>feign/feign-consumer-advanced</module>
+        <!-- hystrix -->
         <module>hystrix/hystrix-fallback</module>
         <module>hystrix/hystrix-turbine</module>
         <module>hystrix/hystrix-dashboard</module>
+        <!-- config -->
+        <module>config/config-server</module>
 
     </modules>
 

@@ -1,6 +1,7 @@
 package com.foodie.user.controller;
 
 import com.foodie.pojo.JSONResult;
+import com.foodie.user.UserApplicationProperties;
 import com.foodie.user.pojo.Users;
 import com.foodie.user.pojo.bo.UserBO;
 import com.foodie.user.service.UserService;
@@ -32,6 +33,9 @@ public class PassportController extends UserBaseController {
     @Autowired
     private RedisOperator redisOperator;
 
+    @Autowired
+    private UserApplicationProperties properties;
+
     @ApiOperation(value = "用户名是否存在", notes = "用户名是否存在", httpMethod = "GET")
     @GetMapping("/usernameIsExist")
     public JSONResult usernameIsExist(@RequestParam String username) {
@@ -56,6 +60,12 @@ public class PassportController extends UserBaseController {
     public JSONResult regist(@RequestBody UserBO userBO,
                                   HttpServletRequest request,
                                   HttpServletResponse response) {
+
+//        使用spring config 外部化配置动态开启服务
+        if (!properties.isEnabledRegistration()) {
+            log.info("service blocked...");
+            return JSONResult.errorMsg("服务器繁忙, 请稍后再试");
+        }
 
         String username = userBO.getUsername();
         String password = userBO.getPassword();

@@ -3,8 +3,10 @@ server:
 
 spring:
   datasource:                                           # 数据源的相关配置
-    url: jdbc:mysql://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
-    password:
+#    url: jdbc:mysql://localhost:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+#    spring config
+    url: ${mariadb.url}
+    password: ${mariadb.password}
   redis:
     database: 0
     host: centos
@@ -15,17 +17,18 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #### actuator config
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-#        include: 'health,info'
-  security:
-    enabled: false
+# 使用spring config 统一配置
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+##        include: 'health,info'
+#  security:
+#    enabled: false
 
 
 #### hystrix config

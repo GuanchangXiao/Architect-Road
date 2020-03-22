@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Colorful9767/config-repo.git
+          force-pull: true  # 强制拉取资源文件
+#          search-paths:
+#          username:
+#          password:
+server:
+  port: 60000
+
